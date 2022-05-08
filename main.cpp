@@ -32,22 +32,27 @@ RREFont font;
 #define TFT_CS  A2  // NOT USED - CS wired LOW on display board
 #define TFT_DC  D6
 #define TFT_RST D5  // NOTE: D4 is SPI1 MISO so cannot be used here
+#define MAX 100
 
 Arduino_ST7735 tft = Arduino_ST7735(TFT_DC, TFT_RST, TFT_CS);
 uint16_t bgCol    = RGBto565(255,255,255);
 
-void customRect(int x, int y, int w, int h, int c) { return tft.fillRect(x, y, w, h, c); }
 
+
+void customRect(int x, int y, int w, int h, int c) { return tft.fillRect(x, y, w, h, c); }
+  char buf[12];
 
 void setup() 
 {
-  Serial.begin(115200);
- 
-  tft.begin();
+  
+  
+  
+  int i;
 
+
+ tft.begin();
+ tft.setRotation(2);
   // Use this initializer if using a 1.8" TFT screen:
-  //tft.initR(INITR_BLACKTAB);      // Init ST7735S chip, black tab
-
   // OR use this initializer if using a 1.8" TFT screen with offset such as WaveShare:
   tft.initR(INITR_GREENTAB);      // Init ST7735S chip, green tab
 
@@ -61,12 +66,26 @@ void setup()
 
   font.setColor(255);
   
-  font.printStr(ALIGN_LEFT,10,"Hello World!");  // center
-  
+ // font.printStr(ALIGN_LEFT,10,"Ambient Temp!");  // center
+   
 }
 
 
 void loop()
 {
+ 
+ 
+    
+   for (int i = 0; i < 100; i++) {
+      font.printStr(ALIGN_CENTER,10,"TEST");
+
+      snprintf(buf, 12, "%d", i); // puts string into buffer
+      font.printStr(ALIGN_CENTER,30,buf);
+            delay(1000);
+    tft.clearScreen();
+
+   }
+ 
+     
 }
 
